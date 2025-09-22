@@ -11,6 +11,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	http.Handle("/CSS/", http.StripPrefix("/CSS/", http.FileServer(http.Dir("CSS"))))
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":80", nil)
 }
