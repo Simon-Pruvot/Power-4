@@ -6,12 +6,12 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/index.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/index.html"))
 	tmpl.Execute(w, nil)
 }
 
 func main() {
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/CSS/", http.StripPrefix("/CSS/", http.FileServer(http.Dir("src/CSS"))))
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":80", nil)
 }
