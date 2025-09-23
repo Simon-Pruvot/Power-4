@@ -10,7 +10,7 @@ type pageData struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/index.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/index.html"))
 	tmpl.Execute(w, nil)
 }
 
