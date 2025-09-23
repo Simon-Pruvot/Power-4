@@ -1,5 +1,16 @@
-body{
-    background-color:  grey;
+*{
     text-align: center;
+    background-color: rgb(158, 158, 158);
 }
 
+.jeton{
+    height: 100px;
+}
+
+.gallery{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "a b ";
+}
+.a { grid-area: a; }
