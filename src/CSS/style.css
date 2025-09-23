@@ -1,16 +1,31 @@
 *{
     text-align: center;
-    background-color: rgb(158, 158, 158);
+    justify-content: center;
+    background-color:#32346F;
 }
 
-.jeton{
-    height: 100px;
+
+button {
+  padding: 12px 20px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.gallery{
+button:hover {
+  background-color: #cc0000;
+}
+
+.gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-areas:
-        "a b ";
+    grid-template-columns: repeat(7, 100px); 
 }
-.a { grid-area: a; }
+
+.jeton {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
