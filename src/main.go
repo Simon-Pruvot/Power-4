@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+<<<<<<< Updated upstream
 type pageData struct {
 	grille [][]int
 }
@@ -14,6 +15,10 @@ jeu:= pageData{{{0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0},}}
+=======
+var tmpl = template.Must(template.ParseFiles("src/template/index.html"))
+
+>>>>>>> Stashed changes
 func handler(w http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.ParseFiles("src/template/index.html"))
 	tmpl.Execute(w, nil)
