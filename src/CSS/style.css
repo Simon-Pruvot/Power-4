@@ -1,7 +1,12 @@
+
+body {
+  font-family: "Tektur", sans-serif;
+  background-color: rgb(135, 140, 189);
+}
+
 *{
     text-align: center;
     justify-content: center;
-    background-color:#32346F;
 }
 
 
@@ -28,4 +33,35 @@ button:hover {
     width: 100px;
     height: 100px;
     object-fit: cover;
+}
+
+header {
+  background-color: #302e2e;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  border-radius: 15px;
+}
+
+/* Titre du site */
+header h1 {
+  margin: 0;
+  font-size: 50px;
+  font-family: "Tektur", sans-serif;
+  font-weight: 700;
+}
+
+/* Navigation */
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff4444;
 }

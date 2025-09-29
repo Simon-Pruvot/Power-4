@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="./CSS/style.css">
 </head>
     <body>
-        <h1>Hello 2</h1>
-        <h2>Choisissez votre mode de jeux</h2>
-        <div class="gallery">
+        {{template "header" .}}
+        <div class="gallery"> 
+        {{range .Colonnes}}
+        <form method="POST" action="/play"> 
+            <input type="hidden" name="col" value="{{.}}">
+            <input type="submit" class="jeton" value="">
+        </form>
+        {{end}}
         {{range .Grille}}
-                {{range .}}
-                    <img src="{{.}}" class="jeton">
-                {{end}}
+            {{range .}}
+            <img src="{{.}}" class="jeton">
+            {{end}}
         {{end}}
         </div>
         
