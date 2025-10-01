@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -41,7 +40,9 @@ func play(w http.ResponseWriter, r *http.Request) {
 	if colStr != "" {
 		col, err := strconv.Atoi(colStr)
 		if err == nil {
-			data.ajouterPion(col)
+			if data.ajouterPion(col) {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+			}
 		}
 	}
 	for index := range data.Colonnes {
@@ -50,35 +51,91 @@ func play(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("template/play.html", "template/header.html"))
 	tmpl.Execute(w, data)
 }
-func (data *pageData) verif(ligne int, col int) {
+func (data *pageData) verif(ligne int, col int) bool {
 	compteur := 1
 	for i := ligne - 1; i > -1; i-- {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
 			compteur += 1
-			fmt.Println(compteur)
 		} else {
 			break
 		}
 	}
-	for i := ligne - 1; i < 6; i++ {
+	for i := ligne + 1; i < len(data.Grille[0])-1; i++ {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
 			compteur += 1
-			fmt.Println(compteur)
 		} else {
 			break
 		}
 	}
+	if compteur >= 4 {
+		return true
+	} else {
+		compteur = 1
+		for i := col + 1; i < len(data.Grille)-1; i++ {
+			if data.Grille[i][ligne] == data.Grille[col][ligne] {
+				compteur += 1
+			} else {
+				break
+			}
+		}
+		if compteur >= 4 {
+			return true
+		} else {
+			compteur = 1
+			for i := 1; col-i >= 0 && ligne-i >= 0; i++ {
+				if data.Grille[col-i][ligne-i] == data.Grille[col][ligne] {
+					compteur += 1
+				} else {
+					break
+				}
+			}
+			for i := 1; col+i <= len(data.Grille)-1 && ligne+i <= len(data.Grille[0])-1; i++ {
+				if data.Grille[col+i][ligne+i] == data.Grille[col][ligne] {
+					compteur += 1
+				} else {
+					break
+				}
+			}
+			if compteur >= 4 {
+				return true
+			} else {
+				compteur = 1
+				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
+					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
+						compteur += 1
+					} else {
+						break
+					}
+				}
+				for i := 1; col-i >= 0 && ligne+i <= len(data.Grille[0])-1; i++ {
+					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
+						compteur += 1
+					} else {
+						break
+					}
+				}
+				if compteur >= 4 {
+					return true
+				}
+			}
+
+		}
+	}
+	return false
 }
 
-func (data *pageData) ajouterPion(index int) {
+func (data *pageData) ajouterPion(index int) bool {
 	for i := len(data.Grille) - 1; i >= 0; i-- {
 		if data.Grille[i][index] == "/images/pion0.png" {
 			data.Grille[i][index] = data.joueur[data.indiceJoueur]
-			data.verif(index, i)
+			if data.verif(index, i) {
+				return true
+			}
 			data.indiceJoueur = (data.indiceJoueur + 1) % 2
 			break
 		}
 	}
+	return false
 }
 
 func temp(w http.ResponseWriter, r *http.Request) {
