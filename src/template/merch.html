@@ -5,37 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les skins disponibles</title>
     <link rel="stylesheet" href="./CSS/style.css">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap');
-</style>
- {{template "header" .}}
-  </head>
-   <style>
-
-    .imag img {
-      width: 200px;    /* largeur des images */
-      height: 150px;   /* hauteur des images */
-      object-fit: cover; /* ajuste l’image sans la déformer */
-      border-radius: 100px; /* coins arrondis */
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* petite ombre */
-    }
-  </style>
+</head>
 <body>
-  <div class="imag">
-
-  <img src="/images/pion0.png" alt="Image 1">
-  <img src="/images/pion0.png" alt="Image 2">
-  <img src="/images/pion0.png" alt="Image 3">
-
-  </div>
-
-</body>
-</html></head>
-<body>
-
-  <img src="/images/pion0.png" alt="Image 1">
-  <img src="/images/pion0.png" alt="Image 2">
-  <img src="/images/pion0.png" alt="Image 3">
-
+    {{template "header" .}}
+    <div class="gallery-skin"> 
+    {{range .}}
+    <div class="item">
+        <img src="../images/{{.}}" class="skin">  
+        <form method="POST" action="/play"> 
+            <input type="hidden" name="pion" value="../images/{{.}}">
+            <input type="submit" class="bouton-skin" value="Choisir">
+        </form>
+    </div>
+    {{end}}
+</div>
 </body>
 </html>

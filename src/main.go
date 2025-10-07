@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -26,8 +28,19 @@ func diff(w http.ResponseWriter, r *http.Request) {
 }
 
 func merch(w http.ResponseWriter, r *http.Request) {
+	pion := r.FormValue("pion")
+	fmt.Println("a: ", pion)
+	if pion != "" {
+		data.joueur[0] = pion
+		fmt.Println("pion =", pion)
+	}
 	var tmpl = template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
-	tmpl.Execute(w, nil)
+	temp, _ := os.ReadDir("./images")
+	images := []string{}
+	for _, e := range temp {
+		images = append(images, e.Name())
+	}
+	tmpl.Execute(w, images)
 }
 
 func pers(w http.ResponseWriter, r *http.Request) {
