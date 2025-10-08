@@ -1,13 +1,10 @@
 
 body {
   font-family: "Tektur", sans-serif;
-  background-color: rgb(135, 140, 189);
+  background-color: rgba(9, 10, 36, 1);
+  text-align: center;
 }
 
-*{
-    text-align: center;
-    justify-content: center;
-}
 
 
 button {
@@ -68,13 +65,13 @@ button:hover {
 
 
 header {
-  background-color: #302e2e;
+  background-color: rgba(22, 19, 72, 1);
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  border-radius: 15px;
+  border-radius: 100px;
 }
 
 /* Titre du site */
@@ -96,4 +93,11 @@ nav a {
 
 nav a:hover {
   color: #ff4444;
+}
+
+.player{
+  background-color: white;
+  width: 200px;
+  height: 90px;
+  margin-right: 500px;
 }

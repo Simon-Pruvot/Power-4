@@ -31,8 +31,7 @@ func merch(w http.ResponseWriter, r *http.Request) {
 	pion := r.FormValue("pion")
 	fmt.Println("a: ", pion)
 	if pion != "" {
-		data.joueur[0] = pion
-		fmt.Println("pion =", pion)
+		data.joueur[0] = "../images/" + pion
 	}
 	var tmpl = template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
 	temp, _ := os.ReadDir("./images")
@@ -40,7 +39,7 @@ func merch(w http.ResponseWriter, r *http.Request) {
 	for _, e := range temp {
 		images = append(images, e.Name())
 	}
-	tmpl.Execute(w, images)
+	tmpl.Execute(w, images[1:])
 }
 
 func pers(w http.ResponseWriter, r *http.Request) {
@@ -91,7 +90,7 @@ func (data *pageData) verif(ligne int, col int) bool {
 				break
 			}
 		}
-		if compteur >= 4 {
+		if compteur >= 3 {
 			return true
 		} else {
 			compteur = 1
@@ -153,15 +152,16 @@ func (data *pageData) ajouterPion(index int) bool {
 
 func temp(w http.ResponseWriter, r *http.Request) {
 
-	data = pageData{Grille: [][]string{
+	data.Grille = [][]string{
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
-	}, joueur: []string{"/images/pion1.png", "/images/pion2.png"}, indiceJoueur: 0}
+	}
 	data.Colonnes = make([]int, len(data.Grille[0]))
+	fmt.Println(data)
 	http.Redirect(w, r, "/play", http.StatusSeeOther)
 }
 
@@ -177,6 +177,7 @@ func nouvelleGrille(rows, cols int) [][]string {
 }
 
 func main() {
+	data = pageData{joueur: []string{"/images/pion1.png", "/images/pion2.png"}, indiceJoueur: 0}
 	http.Handle("/CSS/", http.StripPrefix("/CSS/", http.FileServer(http.Dir("CSS"))))
 	fs := http.FileServer(http.Dir("./images"))
 	http.Handle("/images/", http.StripPrefix("/images/", fs))
