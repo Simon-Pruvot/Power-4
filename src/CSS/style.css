@@ -2,34 +2,55 @@
 body {
   font-family: "Tektur", sans-serif;
   background-color: rgba(9, 10, 36, 1);
-  text-align: center;
+  max-width: 98.75vw;
+  width: 100vw; /* Full width */
+  overflow-x: hidden;
 }
 
 
 
 button {
   padding: 12px 20px;
-  background-color: #ff4444;
-  color: white;
+  background-color: #edf467;
+  color: rgb(0, 0, 0);
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #cc0000;
+  background-color: #fcffbc;
 }
 
 .gallery {
     display: grid;
-    grid-template-columns: repeat(7, 100px); 
+    grid-template-columns: repeat(var(--cols), 100px);
+    text-align: center; 
+    justify-content: center; 
+}
+
+.circle_wrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgb(39, 112, 238);
+    display: flex;
+    border-radius: 0%;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* coupe l'image pour rester dans le cercle */
+}
+
+.j_button{
+  width: 100px;
+  height: 100px;
 }
 
 .jeton {
     width: 100px;
     height: 100px;
+    border-radius: 50%;
     object-fit: cover;
+    background-color: rgb(39, 112, 238);
 }
 
 .skin {
@@ -53,7 +74,9 @@ button:hover {
 .skin {
   width: 200px;
   height: 200px;
+  border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #FFED19;
 }
 
 .bouton-skin {
@@ -63,15 +86,17 @@ button:hover {
   cursor: pointer;
 }
 
-
 header {
   background-color: rgba(22, 19, 72, 1);
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
+  padding: 15px 40px;
   border-radius: 100px;
+  width: 90vw;
+  margin: auto;
+  margin-top: 40px;
 }
 
 /* Titre du site */
@@ -96,8 +121,54 @@ nav a:hover {
 }
 
 .player{
-  background-color: white;
-  width: 200px;
-  height: 90px;
-  margin-right: 500px;
+  background-color: #ffffff;
+  justify-content: center;
+  display: flex;
+  width: 30vw;
+  height: 75vh;
+  margin-left: 850px;
+  margin-top: -260px;
+}
+
+.indexh1{
+  color: #ffffff;
+  display: flex;  
+  justify-content: space-between;
+  margin-left: 10vw;
+   margin-top: 5vw;
+   font-size: 2.3vw;
+}
+
+.indexh1 img{
+  width: 35vw;
+  height: auto;
+  margin-right: 7vw;
+}
+
+.indexh2{
+  color: #ffffff;
+   margin-left: 10vw;
+   margin-top: -14vw;
+   font-size: 1vw;
+   font-family: "Tektur", sans-serif;
+   font-weight: bold;
+}
+
+.indexprenom {
+  width: 100vw;
+  height: 35px;
+  margin: auto;
+  color: #ffffff;
+  word-spacing: 20vw;
+  background-color: #ff595985;
+  margin-top: 14vw;
+  padding-left: 13vw;
+  padding-top: 0.5vw;
+  padding-bottom: 3vw;
+   font-size: 1vw;
+}
+
+.indexboutonjouer {
+  border-radius: 100px;
+  width: 100px;
 }

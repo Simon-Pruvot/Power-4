@@ -8,19 +8,26 @@
 </head>
 <body>
     {{template "header" .}}
+
+    <a href="/camera"style="display:inline-block; background:#4C63C6; color:white; padding:8px 16px; border-radius:6px; text-decoration:none;">
+    🎥 Take a New Photo
+    </a>
+
+
     <div class="gallery-skin"> 
     {{range .}}
     <div class="item">
         <img src="../images/{{.}}" class="skin">  
         <form method="POST" action="/merch"> 
-            <input type="hidden" name="pion" value="{{.}}">
-            <input type="submit" class="bouton-skin" value="Choisir">
+            <input type="hidden" name="pion1" value="{{.}}">
+            <input type="submit" class="bouton-skin" value="Joueur 1">
+        </form>
+        <form method="POST" action="/merch"> 
+            <input type="hidden" name="pion2" value="{{.}}">
+            <input type="submit" class="bouton-skin" value="Joueur 2">
         </form>
     </div>
     {{end}}
-    <div class="player">
-        <h1>slt</h1>
     </div>
-</div>
 </body>
 </html>

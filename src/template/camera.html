@@ -1,0 +1,62 @@
+{{template "header.html"}}
+<body style="font-family: sans-serif; text-align:center; background:#32346F; color:white;">
+  <h1>Take Your Custom Skin</h1>
+  <p>Allow camera access, align your face, then click capture.</p>
+
+  <video id="video" width="500" height="500" autoplay playsinline
+         style="border:4px solid #FFED19; border-radius:10px;"></video>
+  <br><br>
+
+  <button id="capture"
+          style="background:#F5503A; color:white; padding:10px 20px; border:none; border-radius:8px; font-size:16px;">
+    📸 Capture Photo
+  </button>
+
+  <canvas id="canvas" width="500" height="500"
+          style="display:none; border:4px solid #4C63C6; margin-top:20px; border-radius:10px;"></canvas>
+
+  <p id="status" style="margin-top:20px; font-weight:bold;"></p>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture');
+    const statusEl = document.getElementById('status');
+
+    // Ask permission & start camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; })
+      .catch(err => {
+        statusEl.textContent = 'Cannot access camera: ' + err.message;
+      });
+
+    captureBtn.addEventListener('click', () => {
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 500, 500);
+      canvas.style.display = 'block';
+      statusEl.textContent = 'Captured! Uploading...';
+
+      canvas.toBlob(async (blob) => {
+        const form = new FormData();
+        form.append('photo', blob, 'photo.jpg');
+
+        try {
+          const res = await fetch('/uploadphoto', { method: 'POST', body: form });
+          if (res.ok) {
+            statusEl.textContent = 'Photo saved successfully!';
+            setTimeout(() => { window.location.href = '/merch'; }, 1000);
+          } else {
+            const text = await res.text();
+            statusEl.textContent = 'Upload failed: ' + text;
+          }
+        } catch (err) {
+          statusEl.textContent = 'Error: ' + err.message;
+        }
+      }, 'image/jpeg', 0.9);
+    });
+  </script>
+</body>
+</html>
+
+
+
