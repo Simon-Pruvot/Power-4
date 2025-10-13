@@ -9,10 +9,6 @@
 <body>
     {{template "header" .}}
 
-    <a href="/camera"style="display:inline-block; background:#4C63C6; color:white; padding:8px 16px; border-radius:6px; text-decoration:none;">
-    🎥 Take a New Photo
-    </a>
-
 
     <div class="gallery-skin"> 
     {{range .}}
@@ -28,6 +24,11 @@
         </form>
     </div>
     {{end}}
+    </div>
+    <div class="camera">
+        <a href="/camera">
+        🎥 Take a New Photo
+        </a>
     </div>
 </body>
 </html>

@@ -69,7 +69,6 @@ func pers(w http.ResponseWriter, r *http.Request) {
 }
 
 func play(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(data.verifBot)
 	rowsStr := r.FormValue("rows")
 	colsStr := r.FormValue("cols")
 
@@ -179,9 +178,11 @@ func (data *pageData) verif(ligne int, col int) int {
 				return compteur
 			} else {
 				compteur = 1
+				ctr := 1
 				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
 					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
 						compteur += 1
+						ctr += 1
 					} else {
 						break
 					}
@@ -189,6 +190,7 @@ func (data *pageData) verif(ligne int, col int) int {
 				for i := 1; col-i >= 0 && ligne+i <= len(data.Grille[0])-1; i++ {
 					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
 						compteur += 1
+						ctr += 1
 					} else {
 						break
 					}
@@ -199,6 +201,7 @@ func (data *pageData) verif(ligne int, col int) int {
 				if compteur >= 4 {
 					return compteur
 				}
+				fmt.Println(ctr)
 			}
 
 		}
