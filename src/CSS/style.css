@@ -156,6 +156,33 @@ nav a:hover {
 
 .index2{
   color: #ffffff;
+  display: flex;  
+  margin-left: 10vw;
+   margin-top: 5vw;
+   font-size: 2.3vw;
+   width: 99vw;
+}
+
+.index2 h1{
+  width: 70vw;
+}
+
+.index2 img{
+  display: flex;
+  z-index: 10;
+  margin-top: -10vw;
+  width: 50vw;
+  height: auto;
+  margin-right: 9rem;
+}
+
+.indexgrand{
+  color: #ffffff;
+   margin-left: 10vw;
+   margin-top: -22vw;
+   font-size: 1vw;
+   font-family: "Tektur", sans-serif;
+   font-weight: bold;
 }
 
 .indexprenom {
@@ -179,11 +206,15 @@ nav a:hover {
 
 .camera a{
   margin-left: 45vw;
-  margin-top: 20vw;
   background:#4C63C6; 
   color:white; 
   padding:8px 16px; 
   border-radius:6px; 
   text-decoration:none;
 
+}
+
+.camera{
+  margin-top: 5vw;
+  margin-bottom: 5vw;
 }
