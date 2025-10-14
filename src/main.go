@@ -120,10 +120,12 @@ func play(w http.ResponseWriter, r *http.Request) {
 }
 
 func (data *pageData) verif(ligne int, col int) int {
+	fmt.Println("aaaa")
 	max := 1
 	compteur := 1
 	for i := ligne - 1; i > -1; i-- {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
+			fmt.Print("a", col, i, ":")
 			compteur += 1
 		} else {
 			break
@@ -131,6 +133,7 @@ func (data *pageData) verif(ligne int, col int) int {
 	}
 	for i := ligne + 1; i < len(data.Grille[0])-1; i++ {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
+			fmt.Print("b", col, i, ":")
 			compteur += 1
 		} else {
 			break
@@ -139,12 +142,14 @@ func (data *pageData) verif(ligne int, col int) int {
 	if max < compteur {
 		max = compteur
 	}
+	fmt.Println(compteur)
 	if compteur >= 4 {
 		return max
 	} else {
 		compteur = 1
 		for i := col; i < len(data.Grille)-1; i++ {
 			if data.Grille[i][ligne] == data.Grille[col][ligne] {
+				fmt.Print("c", i, ligne, ":")
 				compteur += 1
 			} else {
 				break
@@ -153,12 +158,14 @@ func (data *pageData) verif(ligne int, col int) int {
 		if max < compteur {
 			max = compteur
 		}
-		if compteur >= 3 {
+		fmt.Println(compteur)
+		if compteur >= 4 {
 			return compteur
 		} else {
 			compteur = 1
 			for i := 1; col-i >= 0 && ligne-i >= 0; i++ {
 				if data.Grille[col-i][ligne-i] == data.Grille[col][ligne] {
+					fmt.Print("d", col-i, ligne-i, ":")
 					compteur += 1
 				} else {
 					break
@@ -166,6 +173,7 @@ func (data *pageData) verif(ligne int, col int) int {
 			}
 			for i := 1; col+i <= len(data.Grille)-1 && ligne+i <= len(data.Grille[0])-1; i++ {
 				if data.Grille[col+i][ligne+i] == data.Grille[col][ligne] {
+					fmt.Print("e", col+i, ligne+i, ":")
 					compteur += 1
 				} else {
 					break
@@ -174,6 +182,7 @@ func (data *pageData) verif(ligne int, col int) int {
 			if max < compteur {
 				max = compteur
 			}
+			fmt.Println(compteur)
 			if compteur >= 4 {
 				return compteur
 			} else {
@@ -181,6 +190,7 @@ func (data *pageData) verif(ligne int, col int) int {
 				ctr := 1
 				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
 					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
+						fmt.Print("f", col+i, ligne-i, ":")
 						compteur += 1
 						ctr += 1
 					} else {
@@ -189,6 +199,7 @@ func (data *pageData) verif(ligne int, col int) int {
 				}
 				for i := 1; col-i >= 0 && ligne+i <= len(data.Grille[0])-1; i++ {
 					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
+						fmt.Print("g", col-i, ligne+i, ":")
 						compteur += 1
 						ctr += 1
 					} else {
@@ -198,10 +209,10 @@ func (data *pageData) verif(ligne int, col int) int {
 				if max < compteur {
 					max = compteur
 				}
+				fmt.Println(compteur)
 				if compteur >= 4 {
 					return compteur
 				}
-				fmt.Println(ctr)
 			}
 
 		}
