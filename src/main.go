@@ -32,15 +32,26 @@ func diff(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
+func victoire(w http.ResponseWriter, r *http.Request) {
+	joueur := r.URL.Query().Get("winner")
+	var tmpl = template.Must(template.ParseFiles("template/victoire.html", "template/header.html"))
+	tmpl.Execute(w, joueur)
+}
+
+func regle(w http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.ParseFiles("template/regle.html", "template/header.html"))
+	tmpl.Execute(w, regle)
+}
+
 func merch(w http.ResponseWriter, r *http.Request) {
 	pion1 := r.FormValue("pion1")
 	pion2 := r.FormValue("pion2")
 
 	if pion1 != "" {
-		data.joueur[0] = "/images/" + pion1 // ✅ fixed path
+		data.joueur[0] = "/images/" + pion1 // fixed path
 	}
 	if pion2 != "" {
-		data.joueur[1] = "/images/" + pion2 // ✅ fixed path
+		data.joueur[1] = "/images/" + pion2 // fixed path
 	}
 
 	tmpl := template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
@@ -59,7 +70,7 @@ func merch(w http.ResponseWriter, r *http.Request) {
 		images = append(images, f.Name())
 	}
 
-	// ✅ Don’t skip the first image
+	// Don’t skip the first image
 	tmpl.Execute(w, images)
 }
 
@@ -81,7 +92,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Always recreate the grid if rows/cols are present in the request
-	if rowsStr != "" && colsStr != "" && rows != 6 && cols != 7 {
+	if rowsStr != "" && colsStr != "" {
 		data.Grille = nouvelleGrille(rows, cols)
 		data.joueur = []string{"/images/pion1.png", "/images/pion2.png"}
 		data.indiceJoueur = 0
@@ -94,7 +105,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 		col, err := strconv.Atoi(colStr)
 		if err == nil {
 			if data.ajouterPion(col) {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				http.Redirect(w, r, "/victoire?winner="+data.joueur[data.indiceJoueur], http.StatusSeeOther)
 				return
 			}
 		}
@@ -120,12 +131,10 @@ func play(w http.ResponseWriter, r *http.Request) {
 }
 
 func (data *pageData) verif(ligne int, col int) int {
-	fmt.Println("aaaa")
 	max := 1
 	compteur := 1
 	for i := ligne - 1; i > -1; i-- {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
-			fmt.Print("a", col, i, ":")
 			compteur += 1
 		} else {
 			break
@@ -133,7 +142,6 @@ func (data *pageData) verif(ligne int, col int) int {
 	}
 	for i := ligne + 1; i < len(data.Grille[0])-1; i++ {
 		if data.Grille[col][i] == data.Grille[col][ligne] {
-			fmt.Print("b", col, i, ":")
 			compteur += 1
 		} else {
 			break
@@ -142,14 +150,12 @@ func (data *pageData) verif(ligne int, col int) int {
 	if max < compteur {
 		max = compteur
 	}
-	fmt.Println(compteur)
 	if compteur >= 4 {
 		return max
 	} else {
 		compteur = 1
-		for i := col; i < len(data.Grille)-1; i++ {
+		for i := col + 1; i < len(data.Grille)-1; i++ {
 			if data.Grille[i][ligne] == data.Grille[col][ligne] {
-				fmt.Print("c", i, ligne, ":")
 				compteur += 1
 			} else {
 				break
@@ -158,14 +164,12 @@ func (data *pageData) verif(ligne int, col int) int {
 		if max < compteur {
 			max = compteur
 		}
-		fmt.Println(compteur)
-		if compteur >= 4 {
+		if compteur >= 3 {
 			return compteur
 		} else {
 			compteur = 1
 			for i := 1; col-i >= 0 && ligne-i >= 0; i++ {
 				if data.Grille[col-i][ligne-i] == data.Grille[col][ligne] {
-					fmt.Print("d", col-i, ligne-i, ":")
 					compteur += 1
 				} else {
 					break
@@ -173,7 +177,6 @@ func (data *pageData) verif(ligne int, col int) int {
 			}
 			for i := 1; col+i <= len(data.Grille)-1 && ligne+i <= len(data.Grille[0])-1; i++ {
 				if data.Grille[col+i][ligne+i] == data.Grille[col][ligne] {
-					fmt.Print("e", col+i, ligne+i, ":")
 					compteur += 1
 				} else {
 					break
@@ -182,14 +185,12 @@ func (data *pageData) verif(ligne int, col int) int {
 			if max < compteur {
 				max = compteur
 			}
-			fmt.Println(compteur)
 			if compteur >= 4 {
 				return compteur
 			} else {
 				compteur = 1
 				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
 					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
-						fmt.Print("f", col+i, ligne-i, ":")
 						compteur += 1
 					} else {
 						break
@@ -197,7 +198,6 @@ func (data *pageData) verif(ligne int, col int) int {
 				}
 				for i := 1; col-i >= 0 && ligne+i <= len(data.Grille[0])-1; i++ {
 					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
-						fmt.Print("g", col-i, ligne+i, ":")
 						compteur += 1
 					} else {
 						break
@@ -206,7 +206,6 @@ func (data *pageData) verif(ligne int, col int) int {
 				if max < compteur {
 					max = compteur
 				}
-				fmt.Println(compteur)
 				if compteur >= 4 {
 					return compteur
 				}
@@ -310,7 +309,8 @@ func main() {
 	http.HandleFunc("/merch", merch)
 	http.HandleFunc("/camera", cameraPage)
 	http.HandleFunc("/uploadphoto", uploadPhoto)
-
+	http.HandleFunc("/victoire", victoire)
+	http.HandleFunc("/regle", regle)
 	http.HandleFunc("/personalisation", pers)
 	http.ListenAndServe(":80", nil)
 }

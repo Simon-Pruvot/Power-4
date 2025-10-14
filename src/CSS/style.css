@@ -7,14 +7,14 @@ body {
   overflow-x: hidden;
 }
 
-
-
 button {
-  padding: 12px 20px;
+  padding: 15px 30px;
   background-color: #edf467;
   color: rgb(0, 0, 0);
   border: none;
   cursor: pointer;
+  border-radius: 10px;
+  font-size: 1.7vw;
 }
 
 button:hover {
@@ -53,11 +53,6 @@ button:hover {
     background-color: rgb(39, 112, 238);
 }
 
-.skin {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-}
 .gallery-skin {
   display: grid;
   grid-template-columns: repeat(auto-fill, 200px);
@@ -170,19 +165,56 @@ nav a:hover {
 .index2 img{
   display: flex;
   z-index: 10;
-  margin-top: -10vw;
+  margin-top: -9vw;
   width: 50vw;
   height: auto;
-  margin-right: 9rem;
+  margin-right: 17rem;
 }
 
 .indexgrand{
   color: #ffffff;
    margin-left: 10vw;
-   margin-top: -22vw;
+   margin-top: -10vw;
    font-size: 1vw;
    font-family: "Tektur", sans-serif;
    font-weight: bold;
+}
+
+.indexboutonjouer {
+  padding-left: 10vw;
+  padding-top: 4vw;
+}
+
+.index3 h1{
+  text-align: right;
+  margin-right: 10vw;
+  font-size: 5vw;
+  padding-top: 10vw;
+  color: #ffffff;
+}
+
+.index3 img{
+  display: flex;
+  z-index: 10;
+  margin-top: -3vw;
+  margin-left: 10vw;
+  width: 20vw;
+  height: auto;
+  margin-right: 9rem;
+}
+
+.indexh2-3{
+  margin-top: -14vw;
+  text-align: right;
+  margin-right: 11vw;
+  color: #ffffff;
+  font-size: 1.2vw;
+}
+
+.index-bouton-skin{
+  margin-top: 6vw;
+  margin-left: 68vw;
+  margin-bottom: 10vw;
 }
 
 .indexprenom {
@@ -199,11 +231,6 @@ nav a:hover {
    font-size: 1vw;
 }
 
-.indexboutonjouer {
-  border-radius: 100px;
-  width: 100px;
-}
-
 .camera a{
   margin-left: 45vw;
   background:#4C63C6; 
@@ -216,4 +243,116 @@ nav a:hover {
 .camera{
   margin-top: 5vw;
   margin-bottom: 5vw;
+}
+
+.indexbackground{
+  position: absolute;
+  top: 3vw;
+  left: -35vw;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.85;
+}
+
+.indexbackground2{
+  position: absolute;
+  top: 50vw;
+  left: 28vw;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+.difftext{
+  color: white;
+  text-align: center;
+}
+
+.diffb{
+  display: flex;
+  justify-content: center; 
+  gap: 20vw;  
+  margin-top: 4vw;
+}
+
+.diffpic{
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  margin-left: 39vw;
+  margin-top: 5vw;
+  gap: 19vw; 
+}
+
+.diffpic{
+  width: 15vw;
+  height: 15vw;
+}
+
+.diffb button{
+  width: 20vw;
+}
+
+.diffbody {
+  height: 100vh;
+  overflow: auto;
+}
+.diffbody::-webkit-scrollbar {
+  display: none;
+}
+.diffbody {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+.zoom{
+   zoom: 0.84;
+}
+
+.imageVictoire{
+  width: 60vw;
+  display: flex;
+  margin: auto;  
+}
+.imageJoueurGagnant{
+  position: absolute;
+  top: 45vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20vw;
+  border-radius: 50%;
+}
+
+.bouton-victoire {
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
+  margin-top: 10vw;
+}
+
+.backgroundVictoire{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.9;
+}
+
+.indexbackground3{
+  position: absolute;
+  top: 180vh;
+  left: -25vw;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.9;
+}
+
+.regle{
+  background-color: white;
 }

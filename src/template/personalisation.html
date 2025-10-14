@@ -8,16 +8,22 @@
 </head>
     <body>
         {{template "header" .}}
-        <h1>Hello 2</h1>
-        <h2>Choisissez votre mode de jeux</h2>
-        <h2>Choisissez la taille de la grille</h2>
-        <form action="/play" method="get">
-            <label for="rows">Lignes :</label>
-            <input type="number" id="rows" name="rows" min="4" max="10" value="6">
-            <label for="cols">Colonnes :</label>
-            <input type="number" id="cols" name="cols" min="4" max="10" value="7">
-            <button type="submit">Créer la grille</button>
-        </form>
+        <div>
+            <img src="../images/imgcss/puissance4cote2.png" alt="puissance4decote" style="margin-top: 2vw; width: 60vw; height: 33,8vw;">
+        </div>
+        <div class="difftext" style="margin-left: 40vw;margin-top: -25vw;">
+            <h1>Choisissez la taille de la grille</h1>
+            <form action="/play" method="get">
+                <label for="rows">Lignes :</label>
+                <input type="number" id="rows" name="rows" min="4" max="10" value="6">
+                
+                <label for="cols">Colonnes :</label>
+                <input type="number" id="cols" name="cols" min="4" max="10" value="7">
+                <br>
+                <br>
+                <button type="submit">Créer la grille</button>
+            </form>
+        </div>
     </body>
 </html>
 
