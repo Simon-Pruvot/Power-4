@@ -187,12 +187,10 @@ func (data *pageData) verif(ligne int, col int) int {
 				return compteur
 			} else {
 				compteur = 1
-				ctr := 1
 				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
 					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
 						fmt.Print("f", col+i, ligne-i, ":")
 						compteur += 1
-						ctr += 1
 					} else {
 						break
 					}
@@ -201,7 +199,6 @@ func (data *pageData) verif(ligne int, col int) int {
 					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
 						fmt.Print("g", col-i, ligne+i, ":")
 						compteur += 1
-						ctr += 1
 					} else {
 						break
 					}
