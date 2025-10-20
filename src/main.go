@@ -17,7 +17,6 @@ type pageData struct {
 	Colonnes     []int
 	joueur       []string
 	indiceJoueur int
-	verifBot     []int
 }
 
 var data pageData
@@ -36,6 +35,11 @@ func victoire(w http.ResponseWriter, r *http.Request) {
 	joueur := r.URL.Query().Get("winner")
 	var tmpl = template.Must(template.ParseFiles("template/victoire.html", "template/header.html"))
 	tmpl.Execute(w, joueur)
+}
+
+func egalite(w http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.ParseFiles("template/egalite.html", "template/header.html"))
+	tmpl.Execute(w, egalite)
 }
 
 func regle(w http.ResponseWriter, r *http.Request) {
@@ -130,18 +134,27 @@ func play(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (data *pageData) verif(ligne int, col int) int {
+func (data *pageData) verif(ligne int, col int, pion string) int {
+	stop := true
+	for i := 0; i < len(data.Grille)+1 && stop; i++ {
+		if data.Grille[0][i] == "/images/pion0.png" {
+			stop = false
+		}
+	}
+	if stop {
+		fmt.Println("égalité")
+	}
 	max := 1
 	compteur := 1
 	for i := ligne - 1; i > -1; i-- {
-		if data.Grille[col][i] == data.Grille[col][ligne] {
+		if data.Grille[col][i] == pion {
 			compteur += 1
 		} else {
 			break
 		}
 	}
 	for i := ligne + 1; i < len(data.Grille[0])-1; i++ {
-		if data.Grille[col][i] == data.Grille[col][ligne] {
+		if data.Grille[col][i] == pion {
 			compteur += 1
 		} else {
 			break
@@ -154,8 +167,8 @@ func (data *pageData) verif(ligne int, col int) int {
 		return max
 	} else {
 		compteur = 1
-		for i := col + 1; i < len(data.Grille)-1; i++ {
-			if data.Grille[i][ligne] == data.Grille[col][ligne] {
+		for i := col + 1; i < len(data.Grille); i++ {
+			if data.Grille[i][ligne] == pion {
 				compteur += 1
 			} else {
 				break
@@ -164,19 +177,19 @@ func (data *pageData) verif(ligne int, col int) int {
 		if max < compteur {
 			max = compteur
 		}
-		if compteur >= 3 {
+		if compteur >= 4 {
 			return compteur
 		} else {
 			compteur = 1
 			for i := 1; col-i >= 0 && ligne-i >= 0; i++ {
-				if data.Grille[col-i][ligne-i] == data.Grille[col][ligne] {
+				if data.Grille[col-i][ligne-i] == pion {
 					compteur += 1
 				} else {
 					break
 				}
 			}
 			for i := 1; col+i <= len(data.Grille)-1 && ligne+i <= len(data.Grille[0])-1; i++ {
-				if data.Grille[col+i][ligne+i] == data.Grille[col][ligne] {
+				if data.Grille[col+i][ligne+i] == pion {
 					compteur += 1
 				} else {
 					break
@@ -190,14 +203,14 @@ func (data *pageData) verif(ligne int, col int) int {
 			} else {
 				compteur = 1
 				for i := 1; col+i <= len(data.Grille)-1 && ligne-i >= 0; i++ {
-					if data.Grille[col+i][ligne-i] == data.Grille[col][ligne] {
+					if data.Grille[col+i][ligne-i] == pion {
 						compteur += 1
 					} else {
 						break
 					}
 				}
 				for i := 1; col-i >= 0 && ligne+i <= len(data.Grille[0])-1; i++ {
-					if data.Grille[col-i][ligne+i] == data.Grille[col][ligne] {
+					if data.Grille[col-i][ligne+i] == pion {
 						compteur += 1
 					} else {
 						break
@@ -216,18 +229,41 @@ func (data *pageData) verif(ligne int, col int) int {
 	return max
 }
 
-func (data *pageData) ajouterPion(index int) bool {
+func chercherLigne(index int) int {
 	for i := len(data.Grille) - 1; i >= 0; i-- {
 		if data.Grille[i][index] == "/images/pion0.png" {
-			data.Grille[i][index] = data.joueur[data.indiceJoueur]
-			if data.verif(index, i) >= 4 {
-				return true
-			}
-			data.indiceJoueur = (data.indiceJoueur + 1) % 2
-			break
+			return i
 		}
 	}
+	return -1
+}
+
+func (data *pageData) ajouterPion(index int) bool {
+	ligne := chercherLigne(index)
+	if ligne != -1 {
+		data.Grille[ligne][index] = data.joueur[data.indiceJoueur]
+		if data.verif(index, ligne, data.joueur[data.indiceJoueur]) >= 4 {
+			return true
+		}
+		data.indiceJoueur = (data.indiceJoueur + 1) % 2
+		bot()
+	}
 	return false
+}
+
+func bot() {
+	maxCol := len(data.Grille[0]) / 2
+	max := 0
+	for i := 0; i < len(data.Grille[0]); i++ {
+		ligne := chercherLigne(i)
+		if ligne != -1 {
+			if data.verif(i, ligne, "/images/pion2.png") > max {
+				maxCol = i
+				max = data.verif(i, ligne, "/images/pion2.png")
+			}
+		}
+	}
+	fmt.Println(maxCol)
 }
 
 func temp(w http.ResponseWriter, r *http.Request) {
@@ -241,7 +277,6 @@ func temp(w http.ResponseWriter, r *http.Request) {
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 	}
 	data.Colonnes = make([]int, len(data.Grille[0]))
-	data.verifBot = make([]int, len(data.Grille[0]))
 	http.Redirect(w, r, "/play", http.StatusSeeOther)
 }
 
@@ -310,6 +345,7 @@ func main() {
 	http.HandleFunc("/camera", cameraPage)
 	http.HandleFunc("/uploadphoto", uploadPhoto)
 	http.HandleFunc("/victoire", victoire)
+	http.HandleFunc("/egalite", egalite)
 	http.HandleFunc("/regle", regle)
 	http.HandleFunc("/personalisation", pers)
 	http.ListenAndServe(":80", nil)
