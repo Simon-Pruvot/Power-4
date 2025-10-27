@@ -13,10 +13,12 @@ import (
 )
 
 type pageData struct {
-	Grille       [][]string
-	Colonnes     []int
-	joueur       []string
-	indiceJoueur int
+	Grille        [][]string
+	Colonnes      []int
+	joueur        []string
+	indiceJoueur  int
+	botverif      [][]int
+	botProfondeur int
 }
 
 var data pageData
@@ -108,7 +110,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	if colStr != "" {
 		col, err := strconv.Atoi(colStr)
 		if err == nil {
-			if data.ajouterPion(col) {
+			if data.ajouterPion(col, data.Grille) {
 				http.Redirect(w, r, "/victoire?winner="+data.joueur[data.indiceJoueur], http.StatusSeeOther)
 				return
 			}
@@ -238,34 +240,56 @@ func chercherLigne(index int) int {
 	return -1
 }
 
-func (data *pageData) ajouterPion(index int) bool {
+func (data *pageData) ajouterPion(index int, grille [][]string) bool {
 	ligne := chercherLigne(index)
 	if ligne != -1 {
-		data.Grille[ligne][index] = data.joueur[data.indiceJoueur]
+		grille[ligne][index] = data.joueur[data.indiceJoueur]
 		if data.verif(index, ligne, data.joueur[data.indiceJoueur]) >= 4 {
 			return true
 		}
 		data.indiceJoueur = (data.indiceJoueur + 1) % 2
-		bot()
+		temp := make([][]int, data.botProfondeur)
+		for i := range temp {
+			temp[i] = make([]int, 2)
+		}
+		//RechercheBot(0, data.Grille, temp)
 	}
 	return false
 }
 
-func bot() {
-	maxCol := len(data.Grille[0]) / 2
-	max := 0
-	for i := 0; i < len(data.Grille[0]); i++ {
-		ligne := chercherLigne(i)
-		if ligne != -1 {
-			if data.verif(i, ligne, "/images/pion2.png") > max {
-				maxCol = i
-				max = data.verif(i, ligne, "/images/pion2.png")
+/*
+	func RechercheBot(profondeur int, grille [][]string, temp [][]int) {
+		copie := make([][]string, len(grille))
+		for i := range grille {
+			copie[i] = append([]string(nil), grille[i]...)
+		}
+		for i := 0; i < len(grille[0]); i++ {
+			ligne := chercherLigne(i)
+			if ligne != -1 {
+				verif := data.verif(i, ligne, data.joueur[profondeur%2])
+				if verif > temp[i][1] && profondeur%2 == 0 {
+					temp[profondeur%2][1] = i
+					temp[profondeur%2][0] = verif
+				} else if verif < temp[i][1] && profondeur%2 == 1 {
+					temp[profondeur%2][1] = i
+					temp[profondeur%2][0] = verif
+				}
 			}
 		}
+		if profondeur%2 < len(temp) && len(temp[profondeur%2]) > 1 {
+			ligne := chercherLigne(temp[profondeur%2][1])
+			if ligne != -1 {
+				copie[ligne][temp[profondeur%2][1]] = data.joueur[profondeur%2]
+			}
+		}
+		if profondeur == data.botProfondeur {
+			fmt.Println("choix du bot:", temp)
+			return
+		} else {
+			RechercheBot(profondeur+1, data.Grille, temp)
+		}
 	}
-	fmt.Println(maxCol)
-}
-
+*/
 func temp(w http.ResponseWriter, r *http.Request) {
 
 	data.Grille = [][]string{
