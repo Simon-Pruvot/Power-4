@@ -1,0 +1,52 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 100px);
+  text-align: center; 
+  justify-content: center; 
+}
+
+.circle_wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: rgb(39, 112, 238);
+  display: flex;
+  border-radius: 0%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.j_button{
+  width: 100px;
+  height: 100px;
+}
+
+.jeton {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: rgb(39, 112, 238);
+}
+
+.player{
+  background-color: #ffffff;
+  justify-content: center;
+  display: flex;
+  width: 30vw;
+  height: 75vh;
+  margin-left: 850px;
+  margin-top: -260px;
+}
+
+.bordbleu{
+  width: 1000px;
+  height: 1000px;
+  margin-top: 100px;
+  background-color: rgba(76, 99, 198, 1);
+}
+
+.zoom{
+  zoom: 0.84;
+}
