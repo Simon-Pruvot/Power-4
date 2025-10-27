@@ -1,0 +1,47 @@
+
+.indexbackground{
+  position: absolute;
+  top: 3vw;
+  left: -35vw;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.85;
+}
+
+.diffb{
+  display: flex;
+  justify-content: center; 
+  gap: 20vw;  
+  margin-top: 4vw;
+}
+
+.diffpic{
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  margin-left: 39vw;
+  margin-top: 5vw;
+  gap: 19vw; 
+}
+
+.diffpic{
+  width: 15vw;
+  height: 15vw;
+}
+
+.diffb button{
+  width: 20vw;
+}
+
+.diffbody {
+  height: 100vh;
+  overflow: auto;
+}
+.diffbody::-webkit-scrollbar {
+  display: none;
+}
+.diffbody {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
