@@ -99,7 +99,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	if colStr != "" {
 		col, err := strconv.Atoi(colStr)
 		if err == nil {
-			if data.ajouterPion(col, data.Grille) {
+			if data.ajouterPion(col, data.Grille, w, r) {
 				http.Redirect(w, r, "/victoire?winner="+data.joueur[data.indiceJoueur], http.StatusSeeOther)
 				return
 			}

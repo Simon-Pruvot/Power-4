@@ -1,8 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+)
 
-// pageData holds the game state used across handlers
 type pageData struct {
 	Grille        [][]string
 	Colonnes      []int
@@ -14,15 +15,15 @@ type pageData struct {
 
 var data pageData
 
-func (data *pageData) verif(ligne int, col int, pion string) int {
+func (data *pageData) verif(ligne int, col int, pion string, w http.ResponseWriter, r *http.Request) int {
 	stop := true
-	for i := 0; i < len(data.Grille)+1 && stop; i++ {
+	for i := 0; i < len(data.Colonnes) && stop; i++ {
 		if data.Grille[0][i] == "/images/pion0.png" {
 			stop = false
 		}
 	}
 	if stop {
-		fmt.Println("égalité")
+		http.Redirect(w, r, "/egalite", http.StatusSeeOther)
 	}
 	max := 1
 	compteur := 1
@@ -118,11 +119,11 @@ func chercherLigne(index int) int {
 	return -1
 }
 
-func (data *pageData) ajouterPion(index int, grille [][]string) bool {
+func (data *pageData) ajouterPion(index int, grille [][]string, w http.ResponseWriter, r *http.Request) bool {
 	ligne := chercherLigne(index)
 	if ligne != -1 {
 		grille[ligne][index] = data.joueur[data.indiceJoueur]
-		if data.verif(index, ligne, data.joueur[data.indiceJoueur]) >= 4 {
+		if data.verif(index, ligne, data.joueur[data.indiceJoueur], w, r) >= 4 {
 			return true
 		}
 		data.indiceJoueur = (data.indiceJoueur + 1) % 2
