@@ -1,17 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
-	"io"
-	"log"
 	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
-	"time"
 )
 
+<<<<<<< HEAD
 type pageData struct {
 	Grille       [][]string
 	Colonnes     []int
@@ -22,6 +16,8 @@ type pageData struct {
 
 var data pageData
 
+=======
+>>>>>>> parent of b6c8be4 (all)
 func handler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("template/index.html", "template/header.html"))
 	tmpl.Execute(w, nil)
@@ -43,42 +39,12 @@ func regle(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, regle)
 }
 
-func merch(w http.ResponseWriter, r *http.Request) {
-	pion1 := r.FormValue("pion1")
-	pion2 := r.FormValue("pion2")
-
-	if pion1 != "" {
-		data.joueur[0] = "/images/" + pion1 // fixed path
-	}
-	if pion2 != "" {
-		data.joueur[1] = "/images/" + pion2 // fixed path
-	}
-
-	tmpl := template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
-
-	files, err := os.ReadDir("./images")
-	if err != nil {
-		http.Error(w, "Unable to read images directory", http.StatusInternalServerError)
-		return
-	}
-
-	images := []string{}
-	for _, f := range files {
-		if f.IsDir() {
-			continue
-		}
-		images = append(images, f.Name())
-	}
-
-	// Don’t skip the first image
-	tmpl.Execute(w, images)
-}
-
 func pers(w http.ResponseWriter, r *http.Request) {
 	var tmpl = template.Must(template.ParseFiles("template/personalisation.html", "template/header.html"))
 	tmpl.Execute(w, nil)
 }
 
+<<<<<<< HEAD
 func play(w http.ResponseWriter, r *http.Request) {
 	rowsStr := r.FormValue("rows")
 	colsStr := r.FormValue("cols")
@@ -297,6 +263,8 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/merch", http.StatusSeeOther)
 }
 
+=======
+>>>>>>> parent of b6c8be4 (all)
 func main() {
 	data = pageData{joueur: []string{"/images/pion1.png", "/images/pion2.png"}, indiceJoueur: 0}
 	http.Handle("/CSS/", http.StripPrefix("/CSS/", http.FileServer(http.Dir("CSS"))))
