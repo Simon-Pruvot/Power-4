@@ -43,10 +43,10 @@ func merch(w http.ResponseWriter, r *http.Request) {
 	pion2 := r.FormValue("pion2")
 
 	if pion1 != "" {
-		data.joueur[0] = "/images/" + pion1 // fixed path
+		data.joueur[0] = "/images/" + pion1
 	}
 	if pion2 != "" {
-		data.joueur[1] = "/images/" + pion2 // fixed path
+		data.joueur[1] = "/images/" + pion2
 	}
 
 	tmpl := template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
@@ -65,7 +65,6 @@ func merch(w http.ResponseWriter, r *http.Request) {
 		images = append(images, f.Name())
 	}
 
-	// Don’t skip the first image
 	tmpl.Execute(w, images)
 }
 
@@ -86,7 +85,6 @@ func play(w http.ResponseWriter, r *http.Request) {
 		cols = cInt
 	}
 
-	// Always recreate the grid if rows/cols are present in the request
 	if rowsStr != "" && colsStr != "" {
 		data.Grille = nouvelleGrille(rows, cols)
 		data.joueur = []string{"/images/pion1.png", "/images/pion2.png"}
@@ -94,7 +92,6 @@ func play(w http.ResponseWriter, r *http.Request) {
 		data.Colonnes = make([]int, cols)
 	}
 
-	// Handle column click
 	colStr := r.FormValue("col")
 	if colStr != "" {
 		col, err := strconv.Atoi(colStr)
@@ -110,13 +107,11 @@ func play(w http.ResponseWriter, r *http.Request) {
 		data.Colonnes[i] = i
 	}
 
-	// Compute number of columns from the actual grid
 	numCols := 0
 	if len(data.Grille) > 0 {
 		numCols = len(data.Grille[0])
 	}
 
-	// Render template
 	tmpl := template.Must(template.ParseFiles("template/play.html", "template/header.html"))
 	tmpl.Execute(w, struct {
 		pageData
@@ -173,7 +168,6 @@ func temp(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/play", http.StatusSeeOther)
 }
 
-// GET /camera — show the webcam capture page
 func cameraPage(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("template/camera.html", "template/header.html"))
 	tmpl.Execute(w, nil)
@@ -192,7 +186,6 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// generate a random name
 	name := fmt.Sprintf("photo_%d.jpg", time.Now().UnixNano())
 	outPath := filepath.Join("images", name)
 
