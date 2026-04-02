@@ -13,28 +13,28 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("template/index.html", "template/header.html"))
+	tmpl := template.Must(template.ParseFiles("src/template/index.html", "src/template/header.html"))
 	tmpl.Execute(w, nil)
 }
 
 func diff(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/diff.html", "template/header.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/diff.html", "src/template/header.html"))
 	tmpl.Execute(w, nil)
 }
 
 func victoire(w http.ResponseWriter, r *http.Request) {
 	joueur := r.URL.Query().Get("winner")
-	var tmpl = template.Must(template.ParseFiles("template/victoire.html", "template/header.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/victoire.html", "src/template/header.html"))
 	tmpl.Execute(w, joueur)
 }
 
 func egalite(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/egalite.html", "template/header.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/egalite.html", "src/template/header.html"))
 	tmpl.Execute(w, egalite)
 }
 
 func regle(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/regle.html", "template/header.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/regle.html", "src/template/header.html"))
 	tmpl.Execute(w, regle)
 }
 
@@ -49,9 +49,9 @@ func merch(w http.ResponseWriter, r *http.Request) {
 		data.joueur[1] = "/images/" + pion2
 	}
 
-	tmpl := template.Must(template.ParseFiles("template/merch.html", "template/header.html"))
+	tmpl := template.Must(template.ParseFiles("src/template/merch.html", "src/template/header.html"))
 
-	files, err := os.ReadDir("./images")
+	files, err := os.ReadDir("src/images")
 	if err != nil {
 		http.Error(w, "Unable to read images directory", http.StatusInternalServerError)
 		return
@@ -69,7 +69,7 @@ func merch(w http.ResponseWriter, r *http.Request) {
 }
 
 func pers(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("template/personalisation.html", "template/header.html"))
+	var tmpl = template.Must(template.ParseFiles("src/template/personalisation.html", "src/template/header.html"))
 	tmpl.Execute(w, nil)
 }
 
@@ -112,7 +112,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 		numCols = len(data.Grille[0])
 	}
 
-	tmpl := template.Must(template.ParseFiles("template/play.html", "template/header.html"))
+	tmpl := template.Must(template.ParseFiles("src/template/play.html", "src/template/header.html"))
 	tmpl.Execute(w, struct {
 		pageData
 		ColsPlusOne int
@@ -169,7 +169,7 @@ func temp(w http.ResponseWriter, r *http.Request) {
 }
 
 func cameraPage(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("template/camera.html", "template/header.html"))
+	tmpl := template.Must(template.ParseFiles("src/template/camera.html", "src/template/header.html"))
 	tmpl.Execute(w, nil)
 }
 
@@ -187,7 +187,7 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	name := fmt.Sprintf("photo_%d.jpg", time.Now().UnixNano())
-	outPath := filepath.Join("images", name)
+	outPath := filepath.Join("src", "images", name)
 
 	out, err := os.Create(outPath)
 	if err != nil {
