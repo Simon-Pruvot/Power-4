@@ -1,13 +1,16 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"os"
+)
 
 func main() {
-	data = pageData{joueur: []string{"/images/pion1.png", "/images/pion2.png"}, indiceJoueur: 0}
 	// Serve static files from src/CSS and src/images
 	http.Handle("/CSS/", http.StripPrefix("/CSS/", http.FileServer(http.Dir("src/CSS"))))
 	fs := http.FileServer(http.Dir("src/images"))
 	http.Handle("/images/", http.StripPrefix("/images/", fs))
+	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir(uploadDir()))))
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/play", play)
 	http.HandleFunc("/diff", diff)
@@ -20,5 +23,9 @@ func main() {
 	http.HandleFunc("/regle", regle)
 	http.HandleFunc("/personalisation", pers)
 	// Use a non-privileged port to avoid requiring admin rights
-	http.ListenAndServe(":8080", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe(":"+port, nil)
 }

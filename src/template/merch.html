@@ -9,6 +9,7 @@
     <title>Les skins disponibles</title>
     <link rel="stylesheet" href="./CSS/base.css">
     <link rel="stylesheet" href="./CSS/merch.css">
+    <link rel="stylesheet" href="./CSS/mobile.css">
 </head>
 <body>
     {{template "header" .}}
@@ -17,7 +18,7 @@
     <div class="gallery-skin"> 
     {{range .}}
     <div class="item">
-        <img src="../images/{{.}}" class="skin">  
+        <img src="{{.}}" class="skin">
         <form method="POST" action="/merch"> 
             <input type="hidden" name="pion1" value="{{.}}">
             <input type="submit" class="bouton-skin" value="Joueur 1">

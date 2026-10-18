@@ -119,3 +119,15 @@ Each HTML template now links to base.css plus its own page stylesheet. The origi
 
 Tip: Add new global utilities to base.css, and keep page-only rules in that page’s CSS to avoid regressions.
 
+
+## Déploiement (Coolify)
+
+| Réglage | Valeur |
+|---|---|
+| Source | GitHub App → `Simon-Pruvot/Power-4`, branche `main` |
+| Build Pack | **Dockerfile** |
+| Ports Exposes | `8080` |
+| Variables | aucune (`PORT=8080`, `UPLOAD_DIR=/app/uploads` déjà définis) |
+| Stockage | aucun |
+
+Chaque visiteur a **sa propre partie** (cookie de session `p4_session`, parties gardées en mémoire 24 h) : deux personnes peuvent jouer en même temps sans se mélanger. Les photos prises avec la webcam ne sont visibles que par le visiteur qui les a prises ; elles sont éphémères (effacées à chaque redéploiement).

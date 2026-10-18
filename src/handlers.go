@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -39,18 +41,9 @@ func regle(w http.ResponseWriter, r *http.Request) {
 }
 
 func merch(w http.ResponseWriter, r *http.Request) {
-	pion1 := r.FormValue("pion1")
-	pion2 := r.FormValue("pion2")
+	id, data := visitor(w, r)
 
-	if pion1 != "" {
-		data.joueur[0] = "/images/" + pion1
-	}
-	if pion2 != "" {
-		data.joueur[1] = "/images/" + pion2
-	}
-
-	tmpl := template.Must(template.ParseFiles("src/template/merch.html", "src/template/header.html"))
-
+	// Jetons proposés : les images du jeu + les photos prises par CE visiteur.
 	files, err := os.ReadDir("src/images")
 	if err != nil {
 		http.Error(w, "Unable to read images directory", http.StatusInternalServerError)
@@ -62,9 +55,25 @@ func merch(w http.ResponseWriter, r *http.Request) {
 		if f.IsDir() {
 			continue
 		}
-		images = append(images, f.Name())
+		images = append(images, "/images/"+f.Name())
+	}
+	if uploads, err := os.ReadDir(uploadDir()); err == nil {
+		for _, f := range uploads {
+			if !f.IsDir() && strings.HasPrefix(f.Name(), id+"_") {
+				images = append(images, "/uploads/"+f.Name())
+			}
+		}
 	}
 
+	// On n'accepte qu'un jeton de la liste ci-dessus.
+	if pion1 := r.FormValue("pion1"); slices.Contains(images, pion1) {
+		data.joueur[0] = pion1
+	}
+	if pion2 := r.FormValue("pion2"); slices.Contains(images, pion2) {
+		data.joueur[1] = pion2
+	}
+
+	tmpl := template.Must(template.ParseFiles("src/template/merch.html", "src/template/header.html"))
 	tmpl.Execute(w, images)
 }
 
@@ -74,6 +83,7 @@ func pers(w http.ResponseWriter, r *http.Request) {
 }
 
 func play(w http.ResponseWriter, r *http.Request) {
+	data := gameFor(w, r)
 	rowsStr := r.FormValue("rows")
 	colsStr := r.FormValue("cols")
 
@@ -116,7 +126,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, struct {
 		pageData
 		ColsPlusOne int
-	}{data, numCols})
+	}{*data, numCols})
 
 }
 
@@ -155,7 +165,7 @@ func RechercheBot(profondeur int, grille [][]string, temp [][]int) {
 */
 
 func temp(w http.ResponseWriter, r *http.Request) {
-
+	data := gameFor(w, r)
 	data.Grille = [][]string{
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
 		{"/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png", "/images/pion0.png"},
@@ -179,6 +189,9 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	id, _ := visitor(w, r)
+	r.Body = http.MaxBytesReader(w, r.Body, 5<<20) // 5 Mo max par photo
+
 	file, _, err := r.FormFile("photo")
 	if err != nil {
 		http.Error(w, "Missing photo", http.StatusBadRequest)
@@ -186,8 +199,13 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	name := fmt.Sprintf("photo_%d.jpg", time.Now().UnixNano())
-	outPath := filepath.Join("src", "images", name)
+	// La photo n'est visible que par le visiteur qui l'a prise (préfixe = son identifiant).
+	if err := os.MkdirAll(uploadDir(), 0o755); err != nil {
+		http.Error(w, "Failed to create upload directory", http.StatusInternalServerError)
+		return
+	}
+	name := fmt.Sprintf("%s_%d.jpg", id, time.Now().UnixNano())
+	outPath := filepath.Join(uploadDir(), name)
 
 	out, err := os.Create(outPath)
 	if err != nil {
@@ -205,4 +223,12 @@ func uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	log.Println("Saved new photo:", outPath)
 
 	http.Redirect(w, r, "/merch", http.StatusSeeOther)
+}
+
+// uploadDir : dossier des photos prises avec la webcam (UPLOAD_DIR, « uploads » par défaut).
+func uploadDir() string {
+	if dir := os.Getenv("UPLOAD_DIR"); dir != "" {
+		return dir
+	}
+	return "uploads"
 }

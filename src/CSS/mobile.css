@@ -1,0 +1,240 @@
+/* Version mobile : chargée en dernier sur toutes les pages, le rendu desktop n'est pas modifié. */
+@media (max-width: 768px) {
+  html { overflow-x: hidden; }
+
+  /* body devient le conteneur des images de fond décoratives, qu'il coupe à la largeur de l'écran */
+  body {
+    position: relative;
+    overflow: clip;
+    width: auto;
+    max-width: none;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
+
+  /* ----- Header ----- */
+  header {
+    box-sizing: border-box;
+    width: auto;
+    margin: 16px 0 0;
+    padding: 10px 18px;
+    border-radius: 28px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  header h1 { font-size: 26px; }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 16px;
+  }
+
+  nav a {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  /* ----- Accueil ----- */
+  .indexh1,
+  .index2 {
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    margin: 32px 12px 0;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .indexh1 h1,
+  .index2 h1 {
+    width: auto;
+    margin: 0;
+  }
+
+  .indexh1 img {
+    width: 70vw;
+    margin: 16px 0 0;
+  }
+
+  .index2 img {
+    width: 60vw;
+    margin: 16px 0 0;
+  }
+
+  .indexh2,
+  .indexgrand,
+  .indexh2-3 {
+    margin: 16px 12px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .indexprenom {
+    box-sizing: border-box;
+    width: auto;
+    height: auto;
+    margin: 32px -8px 0;
+    padding: 12px 16px;
+    word-spacing: normal;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .indexboutonjouer {
+    padding: 8px 0 0;
+    text-align: center;
+  }
+
+  .index3 h1 {
+    margin: 48px 12px 0;
+    padding: 0;
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .index3 img {
+    display: block;
+    width: 40vw;
+    margin: 16px auto 0;
+  }
+
+  .index-bouton-skin {
+    margin: 16px 0 48px;
+    text-align: center;
+  }
+
+  /* ----- Choix du mode ----- */
+  .difftext h1 { font-size: 26px; }
+  .difftext h2 { font-size: 18px; }
+
+  .diffpic {
+    width: auto;
+    height: auto;
+    margin: 24px 0 0;
+    gap: 8vw;
+  }
+
+  .diffpic img {
+    width: 38vw;
+    height: auto;
+  }
+
+  .diffb {
+    gap: 8vw;
+    margin-top: 24px;
+  }
+
+  .diffb button {
+    width: 38vw;
+    padding: 12px 0;
+    font-size: 15px;
+  }
+
+  /* ----- Plateau de jeu : les cases s'adaptent à la largeur de l'écran ----- */
+  .zoom { zoom: 1; }
+
+  .gallery {
+    --cell: calc((100vw - 32px) / var(--cols));
+    grid-template-columns: repeat(var(--cols), var(--cell));
+    margin-top: 24px;
+  }
+
+  .circle_wrapper,
+  .j_button,
+  .jeton {
+    width: var(--cell);
+    height: var(--cell);
+  }
+
+  /* ----- Règles ----- */
+  .regleh1 {
+    margin: 32px 12px 0;
+    font-size: 16px;
+  }
+
+  .regleh2 {
+    margin: 0 12px;
+    font-size: 14px;
+  }
+
+  .regleh3 {
+    width: auto;
+    margin: 0 12px;
+    font-size: 15px;
+  }
+
+  .regleh3 img:not(.reglebackground) {
+    display: block;
+    width: 80vw;
+    margin: 24px auto 0;
+  }
+
+  /* ----- Personnalisation de la grille ----- */
+  .pers-visuel img {
+    display: block;
+    width: 70vw;
+    margin: 24px auto 0;
+  }
+
+  .pers-form { margin: 16px 12px; }
+  .pers-form h1 { font-size: 22px; }
+
+  /* ----- Boutique ----- */
+  .gallery-skin {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .skin {
+    width: 36vw;
+    height: 36vw;
+  }
+
+  .bouton-skin {
+    width: 36vw;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .camera {
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .camera a {
+    display: inline-block;
+    margin-left: 0;
+  }
+
+  /* ----- Caméra ----- */
+  #video,
+  #canvas {
+    max-width: calc(100% - 16px);
+    height: auto;
+  }
+
+  /* ----- Victoire / égalité ----- */
+  .imageVictoire { width: 90vw; }
+
+  .imageJoueurGagnant {
+    position: static;
+    display: block;
+    transform: none;
+    width: 35vw;
+    margin: 32px auto 0;
+  }
+
+  .bouton-victoire {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+}

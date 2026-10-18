@@ -13,8 +13,6 @@ type pageData struct {
 	botProfondeur int
 }
 
-var data pageData
-
 func (data *pageData) verif(ligne int, col int, pion string, w http.ResponseWriter, r *http.Request) int {
 	stop := true
 	for i := 0; i < len(data.Colonnes) && stop; i++ {
@@ -110,7 +108,7 @@ func (data *pageData) verif(ligne int, col int, pion string, w http.ResponseWrit
 	return max
 }
 
-func chercherLigne(index int) int {
+func (data *pageData) chercherLigne(index int) int {
 	for i := len(data.Grille) - 1; i >= 0; i-- {
 		if data.Grille[i][index] == "/images/pion0.png" {
 			return i
@@ -120,7 +118,7 @@ func chercherLigne(index int) int {
 }
 
 func (data *pageData) ajouterPion(index int, grille [][]string, w http.ResponseWriter, r *http.Request) bool {
-	ligne := chercherLigne(index)
+	ligne := data.chercherLigne(index)
 	if ligne != -1 {
 		grille[ligne][index] = data.joueur[data.indiceJoueur]
 		if data.verif(index, ligne, data.joueur[data.indiceJoueur], w, r) >= 4 {
